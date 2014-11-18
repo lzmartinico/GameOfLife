@@ -5,7 +5,7 @@ import Data.Matrix
 
 main = do
 	let d = InWindow "Game of Life" (300, 300) (10, 10)
-	simulate d white 2 test render tick'
+	simulate d white 8 test render tick'
 
 render :: Grid -> Picture
 render = scale 5 5 . pictures . map f . findSquares

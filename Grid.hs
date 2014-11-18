@@ -1,4 +1,5 @@
---import Control.Applicative
+module Grid where
+
 import Data.Matrix
 
 type Cell = Int  -- in fact only 0 and 1 are permitted

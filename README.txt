@@ -4,9 +4,9 @@ Game of Life
 © Lorenzo Martinico, Piotr Jander 2014
 ################################################################################
 
-																			010
-																			001
-The `Game of Life' program, well, plays the game of life.					111
+010    The `Game of Life' program,
+001    well,
+111    plays the game of life.
 
 Overview
 1. Installation.

@@ -1,12 +1,12 @@
 import Grid
 import Graphics.Gloss
-import Graphics.Gloss.Data.ViewPort
+import Graphics.Gloss.Data.ViewPort(ViewPort)
 import Data.Matrix
 
 main = do
-	glider <- fromFile "glider.rle"
-	let d = InWindow "Game of Life" (300, 300) (10, 10)
-	simulate d white 8 glider render tick'
+	vacuumCleaner <- fromFile "vacuum-cleaner.rle"
+	let d = InWindow "Game of Life" (700, 700) (10, 10)
+	simulate d white 8 vacuumCleaner render tick'
 
 render :: Grid -> Picture
 render = scale 5 5 . pictures . map f . findSquares

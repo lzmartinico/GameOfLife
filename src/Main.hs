@@ -2,44 +2,50 @@ import Grid
 import Graphics.Gloss
 import Graphics.Gloss.Data.ViewPort(ViewPort)
 import Data.Matrix
+import Data.List
 import Text.Printf
 import System.Environment
 import System.Directory
 
-type Time  = Float  --can we get rid of this?
-type Colors = (Float, Float)   --renamed this Colors instead of Coors - typo or intentional
+type Time  = Float
+type Coors = (Float, Float)
 
---need to be able to alternate between pattern and fileList when recognising a command such as "Options"  -is this possible?
---if not, delete lines 20,22-26
 main = do
 	args <- getArgs
+	if head args == "options"
+		then available
+		else life args
+
+life :: [String] -> IO ()
+life args = do
 	let
 		stepsPerSec = read (head args) :: Int
 		patternName = last args
 		fileName = printf "../patterns/%s.rle" patternName
-                fileNameList = getDirectoryContents "../patterns/"
 	pattern <- fromFile fileName
-	fileList <- fileNameList
-        let 
-            --this is necessary to remove hidden files; might be improved by checking if file ends with .rle, not sure how to do it though
-            patternList = (filter f fileList)
-            f x = length x > 4
-        --return patternList      this should be the alternate function intead of simulate
-        let d = InWindow "Game of Life" (1000, 1000) (10, 10)
+	let d = InWindow "Game of Life" (1000, 1000) (10, 10)
 	simulate d black stepsPerSec pattern render tick'
 
-render :: Grid -> Picture
-render = translate (-200) (-200) . scale 5 5 . pictures . map f . findSquares
-	where
-		--f :: Colors -> Picture
-	    f (a,b) = chaoticColor a b $ polygon [(a,b), (a+1, b), (a+1, b+1), (a, b+1)]
-	    -- stockColors :: [Color]
-	    stockColors = [red, green, blue, yellow, cyan, magenta, violet, rose, azure, aquamarine, orange, chartreuse]
-	    -- chaoticColor :: Float -> Float -> Picture -> Picture
-	    chaoticColor i j = color (stockColors !! chaos)
-	    	where chaos = (floor (i * j)) `mod` 12
+available :: IO ()
+available = do
+	files <- getDirectoryContents "../patterns"
+	let
+		beforeDot = fst . break (== '.')
+		patterns = map beforeDot . filter (".rle" `isSuffixOf`) $ files
+	mapM_ putStrLn patterns
 
-findSquares :: Grid -> [Colors]
+render :: Grid -> Picture
+render g = translate (-400) (-400) . scale zoom zoom . pictures . map f . findSquares $ g
+	where
+		n = fromIntegral $ ncols g
+		zoom = 600/n
+		f (a,b) = chaoticColor a b $ polygon [(b,a), (b+1, a), (b+1, a+1), (b, a+1)]
+		stockColors = [makeColor8 255 253 153 200, makeColor8 75 204 0 200, makeColor8 74 153 28 200,
+						makeColor8 96 65 255 200, makeColor8 31 48 204 200]
+		chaoticColor i j = color (stockColors !! chaos)
+			where chaos = (floor (i * j)) `mod` length stockColors
+
+findSquares :: Grid -> [Coors]
 findSquares g = [(fromIntegral x, fromIntegral y)|x <-[1..(nrows g)], y <-[1..(ncols g)], g ! (x,y) == 1]
 
 tick' :: ViewPort -> Float -> Grid -> Grid

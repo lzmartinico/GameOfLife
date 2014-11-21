@@ -8,7 +8,6 @@ import System.Environment
 import System.Directory
 import System.Random (randomRIO)
 
-type Time  = Float
 type Coors = (Float, Float)
 type ColorStr = String
 

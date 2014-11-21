@@ -4,14 +4,12 @@ Game of Life
 © Lorenzo Martinico, Piotr Jander 2014
 ################################################################################
 
-010    The `Game of Life' program,
-001    well,
-111    plays the game of life.
 
 Overview
 1. Installation.
 2. Usage.
 3. Features.
+4. Contributions
 
 #1 Installation
 
@@ -77,3 +75,9 @@ It also has, however, some limitations:
 * it can only animate systems which shrink or whose size stays about the same;
   this is because the grid is represented as a matrix of fixed size.
   
+  #4 Contribuitions
+  
+  While we have designed the enginge for converting RLE files to animated drawing,
+  most of the example patterns included in our program are taken by the libraries of the Golly Game of Life simulator.
+  The authors of each pattern are credited in the appropriate file.
+  When no author is included, the code was written by us (but it's still based on "stock" game of life patterns).

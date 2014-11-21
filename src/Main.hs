@@ -6,10 +6,11 @@ import Text.Printf
 import System.Environment
 import System.Directory
 
-type Time  = Float
-type Colors = (Float, Float)
+type Time  = Float  --can we get rid of this?
+type Colors = (Float, Float)   --renamed this Colors instead of Coors - typo or intentional
 
---need to be able to alternate between pattern and fileList when recognising a command such as "Options"
+--need to be able to alternate between pattern and fileList when recognising a command such as "Options"  -is this possible?
+--if not, delete lines 20,22-26
 main = do
 	args <- getArgs
 	let
@@ -20,9 +21,10 @@ main = do
 	pattern <- fromFile fileName
 	fileList <- fileNameList
         let 
+            --this is necessary to remove hidden files; might be improved by checking if file ends with .rle, not sure how to do it though
             patternList = (filter f fileList)
             f x = length x > 4
-        --return patternList
+        --return patternList      this should be the alternate function intead of simulate
         let d = InWindow "Game of Life" (1000, 1000) (10, 10)
 	simulate d black stepsPerSec pattern render tick'
 
